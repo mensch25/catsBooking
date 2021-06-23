@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Cat {
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,6 +20,9 @@ export class Cat {
 
   @Column()
   photoPath: string;
+
+  @Column()
+  costForHour: number;
 
   @Column({ default: false })
   isBooked: boolean;
