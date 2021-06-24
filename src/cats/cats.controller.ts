@@ -24,9 +24,19 @@ export class CatsController {
     return this.catsService.getAllCats();
   }
 
-  @Get(':id')
+  @Get('id/:id')
   async getCat(@Param('id') id: string): Promise<Cat> {
     return this.catsService.getCat(id);
+  }
+
+  @Get('page/:page')
+  async getPage(@Param('page') page: string): Promise<Cat[]> {
+    return this.catsService.getPage(Number.parseInt(page));
+  }
+
+  @Get('page/:page/limit/:limit')
+  async getPageWithOffset(@Param('page') page: string, @Param('limit') limit: string): Promise<Cat[]> {
+    return this.catsService.getPage(Number.parseInt(page), Number.parseInt(limit));
   }
 
   @Get('booked')
