@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor, MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -24,18 +24,17 @@ export class CatsController {
     return this.catsService.getAllCats();
   }
 
-  @Get('id/:id')
-  async getCat(@Param('id') id: string): Promise<Cat> {
+  @Get('id')
+  async getCat(@Query('id') id: string): Promise<Cat> {
     return this.catsService.getCat(id);
   }
 
-  @Get('page/:page')
-  async getPage(@Param('page') page: string): Promise<Cat[]> {
-    return this.catsService.getPage(Number.parseInt(page));
-  }
 
-  @Get('page/:page/limit/:limit')
-  async getPageWithOffset(@Param('page') page: string, @Param('limit') limit: string): Promise<Cat[]> {
+  @Get('page')
+  async getPageWithOffset(@Query('page') page: string, @Query('limit') limit: string): Promise<Cat[]> {
+    if (limit === undefined) {
+      limit = '5';
+    }
     return this.catsService.getPage(Number.parseInt(page), Number.parseInt(limit));
   }
 
@@ -50,8 +49,8 @@ export class CatsController {
     return this.catsService.getAvailableCats();
   }
 
-  @Put('book/:id')
-  async bookCat(@Param('id') id: string): Promise<UpdateResult> {
+  @Put('book')
+  async bookCat(@Query('id') id: string): Promise<UpdateResult> {
     return this.catsService.bookCat(id);
   }
 
@@ -71,7 +70,7 @@ export class CatsController {
     return this.catsService.addNewCat(cat);
   }
 
-  @Put('edit/:id')
+  @Put('edit')
   @UseInterceptors(FileInterceptor('photo', {
     storage: diskStorage({
       destination: './uploads'
@@ -81,7 +80,7 @@ export class CatsController {
       }
     })
   }))
-  async editCat(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body('request') body): Promise<UpdateResult> {
+  async editCat(@Query('id') id: string, @UploadedFile() file: Express.Multer.File, @Body('request') body): Promise<UpdateResult> {
     let cat: CreateCatDto = JSON.parse(body);
     if (file !== undefined) {
       cat.photoPath = file.path;
@@ -89,8 +88,8 @@ export class CatsController {
     return this.catsService.editCat(id, cat);
   }
 
-  @Delete(':id')
-  async removeCat(@Param('id') id: string): Promise<void> {
+  @Delete()
+  async removeCat(@Query('id') id: string): Promise<void> {
     return this.catsService.removeCat(id);
   }
 
