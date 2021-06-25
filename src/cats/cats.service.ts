@@ -18,7 +18,7 @@ export class CatsService {
   getCat(id: string): Promise<Cat> {
     return this.catsRepository.findOne(id);
   }
-  
+
   async getPage(page: number, limit: number = 5): Promise<Cat[]> {
     return this.catsRepository
               .createQueryBuilder()

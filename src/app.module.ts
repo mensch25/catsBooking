@@ -9,10 +9,10 @@ import { Cat } from './cats/cat.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: 5432,
-      username: 'mensch',
-      password: 'admin',
+      username: 'catuser',
+      password: 'catpass',
       database: 'catsdb',
       entities: [Cat],
       synchronize: true,
