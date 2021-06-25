@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  app:
+    image: app
+    ports:
+      - 3000:3000
+    volumes:
+      - database-data:/src/uploads
+    
+  postgres:
+    image: postgres:13.3
+    user: postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: catuser
+      POSTGRES_PASSWORD: catpass
+      POSTGRES_DB: catsdb
+volumes:
+  database-data:
